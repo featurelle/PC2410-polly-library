@@ -6,11 +6,11 @@
 {% block head %}
 <span class="fs-5"><a href="{% url 'library:index' %}" class="text-dark">Home</a> > </span>
 <span class="fs-5"><a href="{% url 'library:books' %}" class="text-dark">Books</a> > </span>
-<span class="fs-5"><a href="{% url 'library:book' book.id %}" class="text-dark">{{ book.title }}</a> > </span>
-<span class="h2">Copies</span>
-<div class="row mt-2">
+<span class="fs-5 fw-bold"><a href="{% url 'library:book' book.id %}" class="text-dark">{{ book.title }}</a> > </span>
+<div class="row mt-0">
     <span>Book by <a href="{% url 'library:author' book.author.id %}" class="text-dark">{{ book.author.fullname }}</a></span>
 </div>
+<span class="h2">Copies</span>
 {% endblock %}
 
 {% block main %}
