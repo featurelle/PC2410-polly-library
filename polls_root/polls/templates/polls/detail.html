@@ -32,7 +32,7 @@
         <form action="{% url 'polls:vote-own' question.id %}" method="post" class="row ms-2">
             {% csrf_token %}
             <div class="col-4">
-                <label for="basic-url" class="form-label">Or type your own here:</label>
+                <label class="form-label">Or type your own here:</label>
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="Your option" name="choice-own" aria-label="choice-own" aria-describedby="choice-add-btn" required>
                     <button class="btn btn-outline-primary" type="submit" id="choice-add-btn">Vote</button>
