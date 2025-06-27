@@ -61,7 +61,7 @@ class Author(models.Model):
 
     @property
     def genres(self) -> QuerySet[Genre]:
-        return Genre.objects.filter(books__author=self)
+        return Genre.objects.filter(books__author=self).distinct()
 
     @property
     def comments(self) -> QuerySet['BookComment']:
