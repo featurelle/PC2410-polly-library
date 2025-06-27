@@ -1,0 +1,28 @@
+{% extends 'polls/base.html' %}
+{% load static %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block main %}
+<div class="row mb-3 pt-2">
+    <div class="col">
+        <h2>Questions</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <ul>
+            {% for question in questions %}
+            <li class="mb-2">
+                <div class="col fs-5">
+                    <a href="{% url 'polls:detail' question.id %}" class="text-decoration-none text-dark hover-zoom">{{ question.title }}</a>
+                </div>
+                <div class="col">
+                    <small>{{ question.pub_date }} | {{ question.views }} view{{ question.views|pluralize }}</small>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

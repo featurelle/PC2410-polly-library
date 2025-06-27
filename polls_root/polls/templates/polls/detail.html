@@ -1,0 +1,44 @@
+{% extends 'polls/base.html' %}
+{% load static %}
+
+{% block title %}{{ question.title }}{% endblock %}
+
+{% block main %}
+{% include 'polls/question-head.html' with question=question %}
+<div class="row">
+    <div class="col">
+        <h5>Choose your answer:</h5>
+        <form action="{% url 'polls:vote' question.id %}" method="post" class="ms-3">
+            {% csrf_token %}
+            {% for option in options %}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="option-{{ forloop.counter0 }}" name="choice-pk" value="{{ option.id }}" required>
+                <label class="form-check-label" for="option-{{ forloop.counter0 }}">
+                    {{ option.text }}
+                </label>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary my-3">Vote</button>
+            or
+            <a href="{% url 'polls:results' question.id %}" class="btn btn-outline-dark">
+                See results
+            </a>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <hr class="text-dark">
+        <form action="{% url 'polls:vote-own' question.id %}" method="post" class="row ms-2">
+            {% csrf_token %}
+            <div class="col-4">
+                <label for="basic-url" class="form-label">Or type your own here:</label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Your option" name="choice-own" aria-label="choice-own" aria-describedby="choice-add-btn" required>
+                    <button class="btn btn-outline-primary" type="submit" id="choice-add-btn">Vote</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

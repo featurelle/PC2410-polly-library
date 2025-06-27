@@ -1,0 +1,32 @@
+{% extends 'library/base.html' %}
+{% load static %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block head %}
+<h2>Home Page</h2>
+What's your passion?
+{% endblock %}
+
+{% block main %}
+<div class="row justify-content-around">
+    <div class="col-3 border border-light rounded text-center p-3 bg-white-tran">
+        <a href="{% url 'library:books' %}" class="text-decoration-none">
+            <img src="{% static 'library/img/books-cute.png' %}" alt="Books" class="w-50 mb-3">
+            <h3 class="text-dark">Books<br>({{ books_count }})</h3>
+        </a>
+    </div>
+    <div class="col-3 border border-light rounded text-center p-3 bg-white-tran">
+        <a href="{% url 'library:authors' %}" class="text-decoration-none">
+            <img src="{% static 'library/img/writer-cute.png' %}" alt="Authors" class="w-50 mb-3">
+            <h3 class="text-dark">Authors<br>({{ authors_count }})</h3>
+        </a>
+    </div>
+    <div class="col-3 border border-light rounded text-center p-3 bg-white-tran">
+        <a href="{% url 'library:genres' %}" class="text-decoration-none">
+            <img src="{% static 'library/img/genres-cute.png' %}" alt="Genres" class="w-50 mb-3">
+            <h3 class="text-dark">Genres<br>({{ genres_count }})</h3>
+        </a>
+    </div>
+</div>
+{% endblock %}

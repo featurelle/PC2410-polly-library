@@ -1,0 +1,61 @@
+{% extends 'library/base.html' %}
+{% load static %}
+
+{% block title %}Genres{% endblock %}
+
+{% block head %}
+<span class="fs-5"><a href="{% url 'library:index' %}" class="text-dark">Home</a> > </span>
+<span class="h2">Genres</span>
+<div class="row mt-2">
+    <span>What's your favorite?</span>
+</div>
+{% endblock %}
+
+{% block main %}
+    <div class="row justify-content-center">
+        <div class="col">
+            {% for genre in genres %}
+            <a name="genre-{{ genre.id }}"></a>
+            <div class="row mb-2">
+                <a class="text-dark" data-bs-toggle="collapse" href="#genre-{{ genre.id }}" role="button" aria-expanded="false" aria-controls="genre-{{ genre.id }}">
+                    <h4>Genre: {{ genre.name }}</h4>
+                </a>
+            </div>
+            <div class="row collapse mb-4 px-4 gap-3" id="genre-{{ genre.id }}">
+                {% for book in genre.books.all %}
+                <div class="col-2 border border-light rounded text-center p-3 bg-white-tran">
+                    <a href="{% url 'library:book' book.id %}" class="text-decoration-none">
+                        <div class="row mb-2">
+                            <div class="col" style="height: 200px;">
+                                <img src="{{ book.cover | default:'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg' }}" alt="Books" class="w-75 h-100 mb-2">
+                            </div>
+                        </div>
+                        <h6 class="text-dark">{{ book.title }}</h6>
+                    </a>
+                    <small>by <a href="{% url 'library:author' book.author_id %}" class="text-decoration-none">
+                        {{ book.author.fullname }}
+                        </a>
+                    </small>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Script to show genre if one is in the url hash -->
+        <script id="show-genre-script" defer>
+            const showCollapsed = async function(genreId) {
+                const genreCollapseElId = `#genre-${genreId}`
+                const genreCollapseEl = document.querySelector(genreCollapseElId)
+                genreCollapseEl.addEventListener('shown.bs.collapse', event => {
+                    const genreAnchor = document.querySelector(`a[name="genre-${genreId}"]`)
+                    genreAnchor.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }, {once: true})
+                new bootstrap.Collapse(genreCollapseEl).show()
+            }
+            const genreIdMatch = location.hash.match(/\d+/)
+            if (genreIdMatch) showCollapsed(genreIdMatch[0]);
+        </script>
+
+    </div>
+{% endblock %}

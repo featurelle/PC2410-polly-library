@@ -1,0 +1,33 @@
+{% extends 'library/base.html' %}
+{% load static %}
+
+{% block title %}Books{% endblock %}
+
+{% block head %}
+<span class="fs-5"><a href="{% url 'library:index' %}" class="text-dark">Home</a> > </span>
+<span class="h2">Books</span>
+<div class="row mt-2">
+    <span>What's your favorite?</span>
+</div>
+{% endblock %}
+
+{% block main %}
+<div class="row justify-content-center gap-3">
+    {% for book in books %}
+    <div class="col-2 border border-light rounded text-center p-3 bg-white-tran">
+        <a href="{% url 'library:book' book.id %}" class="text-decoration-none">
+            <div class="row mb-2">
+                <div class="col" style="height: 200px;">
+                    <img src="{{ book.cover | default:'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg' }}" alt="Books" class="w-75 h-100 mb-2">
+                </div>
+            </div>
+            <h6 class="text-dark">{{ book.title }}</h6>
+        </a>
+        <small>by <a href="{% url 'library:author' book.author_id %}" class="text-decoration-none">
+            {{ book.author.fullname }}
+            </a>
+        </small>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

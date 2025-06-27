@@ -1,0 +1,36 @@
+{% extends 'polls/base.html' %}
+{% load static %}
+
+{% block title %}{{ question.title }} | Results{% endblock %}
+
+{% block main %}
+{% include 'polls/question-head.html' with question=question %}
+<div class="row">
+    <div class="col">
+        <table class="table table-hover table-dark ms-3">
+            <thead>
+                <tr>
+                    <th scope="col">Choice</th>
+                    <th scope="col">Votes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for option in options %}
+                <tr>
+                    <th scope="row">{{ option.text }}</th>
+                    <td>{{ option.votes }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+        </table>
+    </div>
+</div>
+<div class="row pb-3">
+    <div class="col text-center">
+        <hr>
+        <a href="{% url 'polls:detail' question.id %}" class="btn btn-primary">
+            Vote again
+        </a>
+    </div>
+</div>
+{% endblock %}

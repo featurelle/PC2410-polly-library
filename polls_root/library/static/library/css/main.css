@@ -1,0 +1,17 @@
+body {
+    /* background-color: rgb(235, 243, 255); */
+    background-image: url('../img/bg.webp');
+    background-size: cover;
+}
+
+/* body * {
+    border: 1px dotted red !important;
+} */
+
+.bg-blue-tran {
+    background-color: rgba(0, 115, 255, 0.1);
+}
+
+.bg-white-tran {
+    background-color: rgba(255, 255, 255, 0.2);
+}

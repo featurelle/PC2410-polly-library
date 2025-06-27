@@ -1,0 +1,30 @@
+{% extends 'library/base.html' %}
+{% load static %}
+
+{% block title %}Authors{% endblock %}
+
+{% block head %}
+<span class="fs-5"><a href="{% url 'library:index' %}" class="text-dark">Home</a> > </span>
+<span class="h2">Authors</span>
+<div class="row mt-2">
+    <span>Who's your favorite?</span>
+</div>
+{% endblock %}
+
+{% block main %}
+<div class="row justify-content-center gap-3">
+    {% for author in authors %}
+    <div class="col-2 border border-light rounded text-center p-3 bg-white-tran">
+        <a href="{% url 'library:author' author.id %}" class="text-decoration-none">
+            <div class="row mb-2">
+                <div class="col" style="height: 170px;">
+                    <img src="{{ author.img | default:'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg' }}" alt="Author" class="w-75 h-100 mb-2">
+                </div>
+            </div>
+            <h6 class="text-dark">{{ author.fullname }}</h6>
+        </a>
+        <span><small>{{ author.birth | date:"Y" | default:"..."}} - {% if author.death %}{{ author.death | date:"Y" }}{% else %}{{ author.dead | yesno:"...,Now,..." }}{% endif %}</small></span>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

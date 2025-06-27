@@ -1,0 +1,95 @@
+{% extends 'library/base.html' %}
+{% load static %}
+
+{% block title %}{{ author.fullname }}{% endblock %}
+
+{% block head %}
+<span class="fs-5"><a href="{% url 'library:index' %}" class="text-dark">Home</a> > </span>
+<span class="fs-5"><a href="{% url 'library:authors' %}" class="text-dark">Authors</a> > </span>
+<span class="h2">{{ author.fullname }}</span>
+<div class="row mt-2">
+    <span>Related info</span>
+</div>
+{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-4 text-center">
+        <div class="row justify-content-center">
+            <div class="col-9 text-start">
+                <h5>{{ author.fullname }}</h5>
+                <span><strong>Born on </strong>{{ author.birth | date:"F j, Y" | default:"unknown date"}}</span>
+                {% if author.dead %}
+                <br>
+                <span><strong>Died on </strong>{{ author.death | date:"F j, Y" | default:"unknown date"}}</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-9">
+                <img src="{{ author.img }}" alt="{{ author.fullname }} picture" class="w-100 rounded">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div class="row justify-content-around mt-2">
+                    <h5>Genres:</h5>
+                    <ul>
+                        {% for genre in genres %}
+                        <li>
+                            <a href="{% url 'library:genre' genre.id %}" class="text-dark">
+                                {{ genre.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="row text-start">
+            <h4>Books:</h4>
+        </div>
+        {% for book in books %}
+        <div class="row border border-light mb-3">
+            <div class="col-3">
+                <div class="row justify-content-center">
+                    <div class="col-9" style="height: 100px;">
+                        <img src="{{ book.cover | default:'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg' }}" alt="{{ book.title }} picture" class="w-50 h-100 rounded">
+                    </div>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="row h-100 my-0">
+                    <div class="col align-self-center">
+                        <a href="{% url 'library:book' book.id %}" class="text-decoration-none text-dark">
+                            <h5>{{ book.title }}</h5>
+                        </a>
+                        {% for genre in book.genres.all %}
+                        <a href="{% url 'library:genre' genre.id %}" class="text-decoration-none text-dark" style="display: inline-block;">
+                            <small><u>{{ genre.name }}</u>{% include 'library/comma.html' %}</small>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <hr class="mt-5">
+        <h2 class="mt-3">Comments:</h2>
+        {% if comments %}
+        <ul>
+            {% for comment in comments %}
+            <li style="word-break: break-all;">
+                <small><b>{{ comment.author }}</b> about <a href="{% url 'library:book' comment.book.id %}" class="fw-bold">{{ comment.book.title }}</a> ({{ comment.datetime }}):</small><br>
+                "{{ comment.text }}"
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        No comments yet... Looks like you'd be the first! 😊
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

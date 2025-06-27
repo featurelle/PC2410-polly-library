@@ -1,0 +1,98 @@
+{% extends 'library/base.html' %}
+{% load static %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block head %}
+<span class="fs-5"><a href="{% url 'library:index' %}" class="text-dark">Home</a> > </span>
+<span class="fs-5"><a href="{% url 'library:books' %}" class="text-dark">Books</a> > </span>
+<span class="h2">{{ book.title }}</span>
+<div class="row mt-2">
+    <span>by <a href="{% url 'library:author' author.id %}" class="text-dark">{{ author.fullname }}</a></span>
+</div>
+{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-4 text-center">
+        <div class="row justify-content-center">
+            <div class="col-9 text-start mb-2">
+                <div class="row">
+                    <a href="{% url 'library:author' book.author.id %}" class="text-dark mb-2">
+                        <div class="row mb-2">
+                            <div class="col" style="height: 50px;">
+                                <img src="{{ author.img | default:'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg' }}" alt="Author" class="h-100">
+                                <h6 class="text-dark">{{ book.author.fullname }}</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <h5 class="mt-2">{{ book.title }}</h5>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-9">
+                <img src="{{ book.cover | default:'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg' }}" alt="{{ book.title }} picture" class="w-100 rounded">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div class="row justify-content-around">
+                    {% for genre in genres %}
+                    <div class="col-auto">
+                        <a href="{% url 'library:genre' genre.id %}" class="text-dark">
+                            {{ genre.name }}
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-7 mt-5">
+        <h1>About:</h1>
+        <p class="mt-3">
+            {{ book.about | default:"Unfortunately, we don't have info about this book yet.<br>Please contact us if you'd like to share it :)"}}
+        </p>
+        <div class="row justify-content-end">
+            <div class="col-5">
+                <a href="{% url 'library:copies' book.id %}">
+                    <div class="row text-end justify-content-end">
+                        <div class="col-8">
+                            <span>See the copies: </span>
+                            <img src="{% static 'library/img/copies.png' %}" alt="Copies" class="w-25">
+                        </div>
+                    </div>
+                </a>   
+            </div>
+        </div>
+        <h2 class="mt-5">Comments:</h2>
+        {% if comments %}
+        <ul>
+            {% for comment in comments %}
+            <li style="word-break: break-all;">
+                "{{ comment.text }}" <i>(<b>{{ comment.author }}</b>, <u>{{ comment.datetime }}</u>)</i>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        No comments yet... Looks like you'd be the first! 😊
+        {% endif %}
+        <hr>
+        <form action="{% url 'library:comment-book' book.id %}" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="commentAuthorInput" class="form-label">Your nickname</label>
+                <input type="text" class="form-control" name="comment-author" id="commentAuthorInput" placeholder="max. 64 characters" required maxlength=64>
+            </div>
+            <div class="mb-3">
+                <label for="commentTextInput" class="form-label">Your comment</label>
+                <textarea class="form-control" name="comment-text" id="commentTextInput" placeholder="" rows="3" required></textarea>
+            </div>
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary mb-3">Send comment</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
