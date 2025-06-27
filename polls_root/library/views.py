@@ -2,7 +2,6 @@ from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.views import generic
 
 from rest_framework import generics
 
