@@ -42,13 +42,13 @@ def genres(request):
 
 
 def author_details(request, pk: int):
-    author = models.Author.objects.prefetch_related('books').get(pk=pk)
-    author_books = author.books.prefetch_related('genres')
+    author_books_set = models.Book.objects.filter(author__pk=pk).prefetch_related('genres')
+    author = models.Author.objects.prefetch_related(Prefetch('books', queryset=author_books_set)).get(pk=pk)
     author_genres = author.genres
     comments = author.comments
     context = {
         'author': author,
-        'books': author_books,
+        'books': author_books_set,
         'genres': author_genres,
         'comments': comments
     }
